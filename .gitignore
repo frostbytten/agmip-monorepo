@@ -1,0 +1,6 @@
+bazel-agmip
+bazel-bin
+bazel-out
+bazel-testlogs
+.ijwb/.blaze
+.ijwb/.idea

@@ -1,0 +1,11 @@
+java_binary(
+    name = "SalusApp",
+    srcs = ["src/main/java/org/agmip/translators/app/SalusApp.java"],
+    main_class = "org.agmip.translators.app.SalusApp",
+    deps = [":SalusTranslator"],
+)
+
+java_library(
+    name = "SalusTranslator",
+    srcs = glob(["src/main/java/org/agmip/translators/salus/**/*.java"]),
+)
