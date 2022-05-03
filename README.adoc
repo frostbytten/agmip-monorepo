@@ -1,0 +1,8 @@
+= AgMIP Monorepo
+
+This will be the eventual home of all the AgMIP tools and translators.
+
+== Current Projects
+
+translator-core:: The common translator codebase
+translator-salus:: The Salus model translator
