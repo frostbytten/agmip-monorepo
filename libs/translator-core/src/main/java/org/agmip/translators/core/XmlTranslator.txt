@@ -1,0 +1,32 @@
+package org.agmip.translator.core;
+
+SalusModel implements MultiFileTranslator {
+    TranslatorSpec weatherFile = TranslatorSpec.Builder()
+        .format(XML)
+        .preamble(SIMPLE_XML_PREAMBLE)
+        .modelPath("/WDB/Stations")
+        .acePath("weathers")
+        .map("@Elev", "elev", "m")
+        .map("@Lat", "lat", null)
+        .map("@Long", "long, null)
+        .toModel()
+        .fromModel()
+        .records(Weather", "dailyWeather", dailyWeather)
+        .build();
+
+    TranslatorSpec dailyWeather = TranslatorSpec.Builder()
+        .format(XML)
+        .preamble(SIMPLLE_XML_PREAMBLE)
+        .handler(new SalusDailyWeatherHandler())
+        .toModel("doy", "date", extractDOY)
+        .toModel("year", "date", extractYear)
+        .fromModel("date", "doy|year", joinYearDoy)
+        .map("rain", "rain", "mm")
+        .map("srad", "srad", "mJ^1")
+        .map("tmin", "tmin", "C")
+        .map("tmax", "tmax", "C")
+        .build();
+}
+
+//TODO Weather columns defined in XML, read in CSV
+//TODO Mixed reader capablities (CSV embedded in XML, Salus)

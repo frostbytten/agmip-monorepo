@@ -1,0 +1,21 @@
+plugins {
+    id 'java-library'
+}
+
+repositories {
+    mavenLocal()
+    mavenCentral()
+}
+
+dependencies {
+    implementation libs.opencsv
+    implementation libs.icasamvl
+}
+
+testing {
+    suites {
+        test {
+            useJUnitJupiter('5.8.1')
+        }
+    }
+}

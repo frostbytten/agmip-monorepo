@@ -1,5 +1,0 @@
-java_library(
-    name = "translator-core",
-    deps = ["@maven//:com_fasterxml_jackson_core_jackson_databind"],
-    srcs = glob(["src/main/java/**/*.java"]),
-)
