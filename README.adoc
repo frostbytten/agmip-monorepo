@@ -4,5 +4,7 @@ This will be the eventual home of all the AgMIP tools and translators.
 
 == Current Projects
 
+icasa-core:: The base ICASA lookup library
+icasa-mvl:: The published ICASA version used by `icasa-core`.
 translator-core:: The common translator codebase
 translator-salus:: The Salus model translator
