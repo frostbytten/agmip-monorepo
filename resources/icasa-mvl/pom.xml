@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+
+	<groupId>org.agmip.resources</groupId>
+	<artifactId>icasa-mvl</artifactId>
+	<version>${VERSION_NUM}</version>
+
+
+	<name>ICASA MVL Shared Resource</name>
+	<description>The ICASA Master Variable List (MVL) share resource is the CSV files which make up
+		the ICASA MVL in a convenient package for developers who need access to a versioned view.</description>
+	<url>https://agmip.org</url>
+	<licenses>
+		<license>
+			<name>BSD 3-Clause</name>
+			<url>https://github.com/icasa-dd/icasa-mvl/blob/master/LICENSE</url>
+		</license>
+	</licenses>
+	<developers>
+		<developer>
+			<name>Christopher Villalobos</name>
+			<email>cvillalobos@ufl.edu</email>
+			<organization>University of Florida</organization>
+			<organizationUrl>https://ufl.edu/</organizationUrl>
+		</developer>
+		<developer>
+			<name>Cheryl Porter</name>
+			<email>cporter@ufl.edu</email>
+			<organization>University of Florida</organization>
+			<organizationUrl>https://ufl.edu/</organizationUrl>
+		</developer>
+		<developer>
+			<name>Jeffrey White</name>
+			<email>jeffrey.white@ars.usda.gov</email>
+			<organization>UDSA ARS</organization>
+			<organizationUrl>https://www.ars.usda.gov/</organizationUrl>
+		</developer>
+	</developers>
+	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<VERSION_NUM>2.20220524.0</VERSION_NUM>
+	</properties>
+	<scm>
+		<connection>scm:git:https://github.com/icasa-dd/icasa-mvl</connection>
+		<developerConnection>scm:git:https://github.com/icasa-dd/icasa-mvl</developerConnection>
+		<url>scm:git:https://github.com/icasa-dd/icasa-mvl/tree/master</url>
+		<tag>HEAD</tag>
+	</scm>
+	<distributionManagement>
+		<snapshotRepository>
+			<id>ossrh</id>
+			<url>https://oss.sonatype.org/content/repositories/snapshots</url>
+		</snapshotRepository>
+		<repository>
+			<id>ossrh</id>
+			<url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
+		</repository>
+	</distributionManagement>
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>exec-maven-plugin</artifactId>
+				<version>3.0.0</version>
+				<executions>
+					<execution>
+						<goals>
+							<goal>exec</goal>
+						</goals>
+					</execution>
+				</executions>
+				<configuration>
+					<executable>update-mvl.sh</executable>
+				</configuration>
+			</plugin>
+			<plugin>
+				<artifactId>maven-remote-resources-plugin</artifactId>
+				<version>1.6.0</version>
+				<executions>
+					<execution>
+						<goals>
+							<goal>bundle</goal>
+						</goals>
+					</execution>
+				</executions>
+				<configuration>
+					<includes>
+						<include>LICENSE*</include>
+						<include>**/*.csv</include>
+					</includes>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
+	<profiles>
+		<profile>
+			<id>release</id>
+			<build>
+				<plugins>
+					<plugin>
+						<groupId>org.sonatype.plugins</groupId>
+						<artifactId>nexus-staging-maven-plugin</artifactId>
+						<version>1.6.8</version>
+						<extensions>true</extensions>
+						<configuration>
+							<serverId>ossrh</serverId>
+							<nexusUrl>https://oss.sonatype.org/</nexusUrl>
+							<autoReleaseAfterClose>true</autoReleaseAfterClose>
+						</configuration>
+					</plugin>
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-gpg-plugin</artifactId>
+						<version>1.6</version>
+						<executions>
+							<execution>
+								<id>sign-artifacts</id>
+								<phase>verify</phase>
+								<goals>
+									<goal>sign</goal>
+								</goals>
+								<configuration>
+									<keyname>${gpg.keyname}</keyname>
+								</configuration>
+							</execution>
+						</executions>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+	</profiles>
+</project>
