@@ -7,9 +7,22 @@ repositories {
     mavenCentral()
 }
 
+configurations {
+    resources { transitive = false }
+}
+
 dependencies {
     implementation libs.opencsv
-    implementation libs.icasamvl
+    implementation libs.logback
+    resources libs.icasamvl
+}
+
+task copyResources(type: Copy) {
+    from zipTree(configurations.resources.singleFile).matching {
+        include "**/*.csv"
+    }
+    into "$buildDir/resources/main"
+    includeEmptyDirs = false
 }
 
 testing {
@@ -18,4 +31,13 @@ testing {
             useJUnitJupiter('5.8.1')
         }
     }
+}
+
+compileJava {
+    dependsOn(copyResources)
+    options.compilerArgs << '-Xlint:all'
+}
+
+javadoc {
+    options.addStringOption('-html5')
 }
