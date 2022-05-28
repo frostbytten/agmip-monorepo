@@ -5,13 +5,7 @@
 
 	<groupId>org.agmip.resources</groupId>
 	<artifactId>icasa-mvl</artifactId>
-	<version>${VERSION_NUM}</version>
-
-
-	<name>ICASA MVL Shared Resource</name>
-	<description>The ICASA Master Variable List (MVL) share resource is the CSV files which make up
-		the ICASA MVL in a convenient package for developers who need access to a versioned view.</description>
-	<url>https://agmip.org</url>
+	<version>2.20220527.1</version>
 	<licenses>
 		<license>
 			<name>BSD 3-Clause</name>
@@ -38,10 +32,6 @@
 			<organizationUrl>https://www.ars.usda.gov/</organizationUrl>
 		</developer>
 	</developers>
-	<properties>
-		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<VERSION_NUM>2.20220524.0</VERSION_NUM>
-	</properties>
 	<scm>
 		<connection>scm:git:https://github.com/icasa-dd/icasa-mvl</connection>
 		<developerConnection>scm:git:https://github.com/icasa-dd/icasa-mvl</developerConnection>
@@ -76,8 +66,9 @@
 				</configuration>
 			</plugin>
 			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-remote-resources-plugin</artifactId>
-				<version>1.6.0</version>
+				<version>1.7.0</version>
 				<executions>
 					<execution>
 						<goals>
@@ -102,7 +93,7 @@
 					<plugin>
 						<groupId>org.sonatype.plugins</groupId>
 						<artifactId>nexus-staging-maven-plugin</artifactId>
-						<version>1.6.8</version>
+						<version>1.6.13</version>
 						<extensions>true</extensions>
 						<configuration>
 							<serverId>ossrh</serverId>
@@ -113,7 +104,7 @@
 					<plugin>
 						<groupId>org.apache.maven.plugins</groupId>
 						<artifactId>maven-gpg-plugin</artifactId>
-						<version>1.6</version>
+						<version>3.0.1</version>
 						<executions>
 							<execution>
 								<id>sign-artifacts</id>
