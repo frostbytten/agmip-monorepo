@@ -9,3 +9,12 @@
  */
 
 rootProject.name = 'translator-core'
+includeBuild "../icasa-core"
+
+dependencyResolutionManagement {
+    versionCatalogs {
+        libs {
+            from(files("../../libs.versions.toml"))
+        }
+    }
+}

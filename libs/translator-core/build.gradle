@@ -1,7 +1,5 @@
 plugins {
     id 'java-library'
-    id 'idea'
-    id 'eclipse'
 }
 
 repositories {
@@ -10,20 +8,18 @@ repositories {
 }
 
 group = "org.agmip.translators"
-version = "0.1.0"
-sourceCompatibility = 1.11
-
-ext.junitJupiterVersion = "8.5.2"
+version = "1.0.0"
 
 dependencies {
-    implementation('com.fasterxml.jackson.core:jackson-databind:2.13.2.2')
-    testImplementation(platform('org.junit:junit-bom:5.8.2'))
-    testImplementation('org.junit.jupiter:junit-jupiter')
+    implementation libs.logback
+    api libs.jacksonDatabind
+    api 'org.agmip.libs:icasa-core:1.1.0'
 }
 
-test {
-    useJUnitPlatform()
-    testLogging {
-        events "passed", "skipped", "failed"
+testing {
+    suites {
+        test {
+            useJUnitJupiter('5.8.1')
+        }
     }
 }
