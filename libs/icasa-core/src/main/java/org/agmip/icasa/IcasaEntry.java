@@ -2,7 +2,7 @@ package org.agmip.icasa;
 
 import java.util.Objects;
 
-public class IcasaEntry {
+public class IcasaEntry implements IEntry {
     private final String name;
     private final String query;
     private final String desc;

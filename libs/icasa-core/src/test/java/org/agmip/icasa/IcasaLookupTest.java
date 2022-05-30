@@ -1,46 +1,48 @@
 package org.agmip.icasa;
 
+import org.agmip.icasa.loaders.csv.IcasaCsvResourceLoader;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 public class IcasaLookupTest {
-    @Test
-    public void icasaLookupUserInit() {
-        IcasaLookup.INSTANCE.init();
-        assertTrue(IcasaLookup.INSTANCE.lookupSize() >= 0);
-    }
+    private static IcasaEntryImmutableCollection entries;
+    private static IcasaCodeImmutableCollection codes;
+    private static final Logger LOG = LoggerFactory.getLogger(IcasaLookupTest.class);
 
-    @Test
-    public void icasaLookupLazyInit() {
-        assertEquals(IcasaLookupState.UNINITIALIZED, IcasaLookup.INSTANCE.getState());
-        IcasaEntry e = IcasaLookup.INSTANCE.lookupQuery("CRID");
-        assertEquals(IcasaLookupState.INITIALIZED, IcasaLookup.INSTANCE.getState());
+    @BeforeAll
+    public static void setup() {
+        try {
+            entries = IcasaCsvResourceLoader.loadEntries();
+            codes = IcasaCsvResourceLoader.loadCodes();
+        } catch (IOException ex) {
+            LOG.error("Setup error", ex);
+        }
     }
-
     @Test
     public void icasaLookupVariableWorks() {
-        IcasaEntry e = IcasaLookup.INSTANCE.lookupVariable("crop_ident_ICASA");
+        IcasaEntry e = (IcasaEntry) IcasaLookup.lookupVariable("crop_ident_ICASA", entries);
         assertNotNull(e);
         assertEquals("CRID", e.getQuery());
-        String[] pathInfo = e.getIcasaPath().split("[:/]");
-        assertEquals("experiments", pathInfo[0]);
     }
 
     @Test
     public void icasaLookupByQueryWorks() {
-        IcasaEntry e = IcasaLookup.INSTANCE.lookupQuery("CRID");
+        IcasaEntry e = (IcasaEntry) IcasaLookup.lookupQuery("CRID", entries);
         assertNotNull(e);
         assertEquals("crop_ident_ICASA", e.getName());
-        assertEquals("experiments:/management/events$planting", e.getIcasaPath());
     }
 
     @Test
     public void icasaLookupCodeWorks() {
-        IcasaCode c = IcasaLookup.INSTANCE.lookupCode("CRID", "MAZ");
+        IcasaCode c = IcasaLookup.lookupCode("CRID", "MAZ", codes);
         assertNotNull(c);
         assertEquals("Maize", c.getDescription());
         assertTrue(c.hasExtra());
@@ -48,8 +50,8 @@ public class IcasaLookupTest {
 
     @Test
     public void icasaLookupCodeExtra() {
-        IcasaCode c = IcasaLookup.INSTANCE.lookupCode("CRID", "MAZ");
-        IcasaCode c2 = IcasaLookup.INSTANCE.lookupCode("FACTORS", "FACE");
+        IcasaCode c = IcasaLookup.lookupCode("CRID", "MAZ", codes);
+        IcasaCode c2 = IcasaLookup.lookupCode("FACTORS", "FACE", codes);
         assertNotNull(c);
         assertNotNull(c2);
         assertTrue(c.hasExtra());
@@ -61,7 +63,7 @@ public class IcasaLookupTest {
 
     @Test
     public void icasaLookupPathParts() {
-        IcasaEntry e = IcasaLookup.INSTANCE.lookupQuery("CRID");
+        IcasaEntry e = (IcasaEntry) IcasaLookup.lookupQuery("CRID", entries);
         assertNotNull(e);
         assertEquals("experiments", e.getIcasaPathPrefix());
         assertEquals("planting", e.getIcasaPathSuffix());

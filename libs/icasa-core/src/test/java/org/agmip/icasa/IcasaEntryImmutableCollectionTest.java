@@ -30,7 +30,7 @@ public class IcasaEntryImmutableCollectionTest {
         createTwoEntries().forEach(builder::addEntry);
         IcasaEntryImmutableCollection coll = builder.build();
         assertEquals("PDATE", coll.lookupByVariable("planting_date").getQuery());
-        assertEquals("Crop (or weed) species identifier", coll.lookupByQuery("CRID").getDescription());
+        assertEquals("Crop (or weed) species identifier", ((IcasaEntry) coll.lookupByQuery("CRID")).getDescription());
     }
 
     private List<IcasaEntry> createTwoEntries() {
